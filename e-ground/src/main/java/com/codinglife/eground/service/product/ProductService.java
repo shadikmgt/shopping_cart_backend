@@ -7,6 +7,7 @@ import com.codinglife.eground.repository.ProductRepository;
 import com.codinglife.eground.request.AddProductRequest;
 import com.codinglife.eground.request.ProductUpdateRequest;
 import com.codinglife.exception.ProductNotFoundException;
+import com.codinglife.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,6 @@ private final CategoryRepository categoryRepository;
         //If yes, set as a new product category
         //if no, then save it as a new category
         //now set the new product category
-
 
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
@@ -51,13 +51,13 @@ private final CategoryRepository categoryRepository;
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not fund"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not fund"));
     }
 
     @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id).ifPresentOrElse(productRepository :: delete,
-                () -> {throw new ProductNotFoundException("Product not found");
+                () -> {throw new ResourceNotFoundException("Product not found");
         });
     }
 
@@ -68,7 +68,7 @@ private final CategoryRepository categoryRepository;
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct, request))
                 .map(productRepository :: save)
-                .orElseThrow(()-> new ProductNotFoundException("Product not fount"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not fount"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request){
