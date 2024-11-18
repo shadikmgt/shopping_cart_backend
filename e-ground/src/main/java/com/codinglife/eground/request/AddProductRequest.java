@@ -6,9 +6,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 @Data
+@NoArgsConstructor
 public class AddProductRequest {
     private Long id;
     private String name;
