@@ -1,6 +1,7 @@
 package com.codinglife.eground.request;
 
 import com.codinglife.eground.model.Category;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
+
 public class AddProductRequest {
     private Long id;
     private String name;

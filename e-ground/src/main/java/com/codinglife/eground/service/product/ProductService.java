@@ -1,14 +1,18 @@
 package com.codinglife.eground.service.product;
 
+import com.codinglife.eground.dto.ImageDto;
+import com.codinglife.eground.dto.ProductDto;
 import com.codinglife.eground.model.Category;
+import com.codinglife.eground.model.Image;
 import com.codinglife.eground.model.Product;
 import com.codinglife.eground.repository.CategoryRepository;
+import com.codinglife.eground.repository.ImageRepository;
 import com.codinglife.eground.repository.ProductRepository;
 import com.codinglife.eground.request.AddProductRequest;
 import com.codinglife.eground.request.ProductUpdateRequest;
-import com.codinglife.exception.ProductNotFoundException;
 import com.codinglife.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,8 @@ import java.util.Optional;
 public class ProductService implements IProductService{
 private final ProductRepository productRepository;
 private final CategoryRepository categoryRepository;
+private final ImageRepository imageRepository;
+private final ModelMapper modelMapper;
 
 
     @Override
@@ -117,5 +123,16 @@ private final CategoryRepository categoryRepository;
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product){
+        ProductDto productDto = modelMapper.map(product,ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image,ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }

@@ -1,5 +1,6 @@
 package com.codinglife.eground.service.product;
 
+import com.codinglife.eground.dto.ProductDto;
 import com.codinglife.eground.model.Product;
 import com.codinglife.eground.request.AddProductRequest;
 import com.codinglife.eground.request.ProductUpdateRequest;
@@ -29,4 +30,5 @@ public interface IProductService {
 
     Long countProductsByBrandAndName(String brand, String name);
 
+    ProductDto convertToDto(Product product);
 }
